@@ -6,7 +6,7 @@ body {
   font-family: "Helvetica Neue","Helvetica",Helvetica,Arial,sans-serif;
   font-size: 16px;
   margin: 0 auto;
-  max-width: 950px;
+  max-width: 75%;
   padding: 10px;
 }
 
@@ -128,9 +128,17 @@ input {
 .install {
   overflow: hidden;
 }
-
 .examples {
   overflow: hidden;
+}
+
+.left {
+  width: 70%;
+  float: left;
+}
+
+.right {
+  float: right;
 }
 
 .example {
@@ -139,6 +147,16 @@ input {
 
   h4 {
     margin-top: 0;
+  }
+
+  .selector {
+    background-color: white;
+    padding: 5px 10px;
+    width: 100%;
+  }
+
+  .half {
+    width: 43%;
   }
 }
 

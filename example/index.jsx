@@ -49,7 +49,7 @@ const Index = React.createClass({
         <Header />
 
         <div className="content">
-          <div className="example">
+          <div className="left">
             <DateRangePicker
               firstOfWeek={1}
               numberOfCalendars={3}
@@ -63,29 +63,69 @@ const Index = React.createClass({
               dateStates={dateStates}
               overlayDateRange={true}
             />
-            <div>
-              <input type="text"
-                 value={dateStates ? dateStates[0].range.start.format('LL') : ""}
-                 readOnly={true}
-                 placeholder="Start date"/>
-              <input type="text"
-                 value={dateStates ? dateStates[0].range.end.format('LL') : ""}
-                 readOnly={true}
-                 placeholder="End date" />
-            </div>
-            <div>
-              <input type="text"
-                 value={dateStates && dateStates[1] ? dateStates[1].range.start.format('LL') : ""}
-                 readOnly={true}
-                 placeholder="Start date"/>
-              <input type="text"
-                 value={dateStates && dateStates[1] ? dateStates[1].range.end.format('LL') : ""}
-                 readOnly={true}
-                 placeholder="End date" />
-            </div>
           </div>
+          <div className="right">
+            <div className="example">
+              <select className="selector">
+                <option selected value="custom">Custom</option>
+                <option value="today">Today</option>
+                <option value="yesterday">Yesterday</option>
+              </select>
+            </div>
+            <div className="example">
+              <input type="text"
+                     value={dateStates ? dateStates[0].range.start.format('LL') : ""}
+                     readOnly={true}
+                     placeholder="Start date"/>
+              <input type="text"
+                     value={dateStates ? dateStates[0].range.end.format('LL') : ""}
+                     readOnly={true}
+                     placeholder="End date" />
+            </div>
+            <p>Comparing to:</p>
+            <div className="example">
+              <select className="selector">
+                <option selected value="custom">Custom</option>
+                <option value="none">None</option>
+                <option value="previousDay">Previous day</option>
+                <option value="previousWeek">Previous week</option>
+                <option value="previousMonth">Previous month</option>
+              </select>
+            </div>
+            <div className="example">
+              <div className="example">
+                <input type="text"
+                       value={dateStates && dateStates[1] ? dateStates[1].range.start.format('LL') : ""}
+                       readOnly={true}
+                       placeholder="Start date"/>
+                <input type="text"
+                       value={dateStates && dateStates[1] ? dateStates[1].range.end.format('LL') : ""}
+                       readOnly={true}
+                       placeholder="End date" />
+              </div>
+              <div className="example">
+                <select className="selector half">
+                  <option selected value="percent">%</option>
+                  <option value="abs">abs</option>
+                </select>
+              </div>
+            </div>
 
+            <p>By:</p>
+            <div className="example">
+              <select className="selector half">
+                <option selected value="day">Day</option>
+                <option value="hour">Hour</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="quarter">Quarter</option>
+                <option value="year">Year</option>
+              </select>
+            </div>
+
+          </div>
         </div>
+
       </main>
     );
   },
