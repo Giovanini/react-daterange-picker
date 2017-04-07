@@ -3,6 +3,7 @@ import moment from 'moment';
 import {} from 'moment-range';
 import Immutable from 'immutable';
 import calendar from 'calendar';
+import _ from 'lodash';
 
 import BemMixin from './utils/BemMixin';
 import CustomPropTypes from './utils/CustomPropTypes';
@@ -56,6 +57,7 @@ const DateRangePicker = React.createClass({
     showLegend: React.PropTypes.bool,
     stateDefinitions: React.PropTypes.object,
     value: CustomPropTypes.momentOrMomentRange,
+    overlayDateRange: React.PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -343,17 +345,89 @@ const DateRangePicker = React.createClass({
     }
   },
 
+  updateDateState(dateState, newRange, stateDefinitions) {
+
+    const colors = _.filter(stateDefinitions, function(definition) {
+      if (definition.label !== 'Available') {
+        return definition.label
+      }
+    });
+
+    if (!newRange) { return dateState }
+
+    if (_.isEmpty(dateState)) {
+      return [{
+        state: colors[0].label,
+        range: newRange,
+      }];
+    }
+
+    let newDateState = [];
+    if (dateState.length >= 2) {
+      newDateState.push({
+        state: colors[0].label,
+        range: newRange
+      });
+    } else {
+      const rangeStart = dateState[0].range.start.startOf('day');
+      const newRangeStart = newRange.start.startOf('day');
+
+      if (rangeStart > newRangeStart) {
+        newDateState.push({
+          state: colors[1].label,
+          range: newRange
+        });
+        newDateState.push({
+          state: colors[0].label,
+          range: dateState[0].range
+        });
+      } else if (rangeStart < newRangeStart) {
+        newDateState.push({
+          state: colors[0].label,
+          range: dateState[0].range
+        });
+        newDateState.push({
+          state: colors[1].label,
+          range: newRange
+        });
+      } else {
+        newDateState.push({
+          state: colors[0].label,
+          range: dateState[0].range
+        });
+        newDateState.push({
+          state: colors[1].label,
+          range: newRange
+        });
+      }
+    }
+    return newDateState;
+  },
+
   completeRangeSelection() {
+    const {
+      singleDateRange,
+      dateStates,
+      stateDefinitions,
+      overlayDateRange,
+      onSelect
+    } = this.props
+
     let range = this.state.highlightedRange;
 
-    if (range && (!range.start.isSame(range.end, 'day') || this.props.singleDateRange)) {
+    if (range && (!range.start.isSame(range.end, 'day') || singleDateRange)) {
       this.setState({
         selectedStartDate: null,
         highlightedRange: null,
         highlightedDate: null,
         hideSelection: false,
       });
-      this.props.onSelect(range, this.statesForRange(range));
+      if (overlayDateRange) {
+        const newDateStates = this.updateDateState(dateStates, range, stateDefinitions);
+        onSelect(newDateStates);
+      } else {
+        onSelect(range, this.statesForRange(range), dateStates);
+      }
     }
   },
 
@@ -453,6 +527,8 @@ const DateRangePicker = React.createClass({
       numberOfCalendars,
       selectionType,
       value,
+      locale,
+      overlayDateRange,
     } = this.props;
 
     let {
@@ -462,6 +538,7 @@ const DateRangePicker = React.createClass({
       highlightedDate,
       highlightedRange,
     } = this.state;
+
     let monthDate = this.getMonthDate();
     let year = monthDate.year();
     let month = monthDate.month();
@@ -507,6 +584,8 @@ const DateRangePicker = React.createClass({
       key,
       selectionType,
       value,
+      locale,
+      overlayDateRange,
       maxIndex: numberOfCalendars - 1,
       firstOfMonth: monthDate,
       onMonthChange: this.changeMonth,
@@ -516,7 +595,6 @@ const DateRangePicker = React.createClass({
       onUnHighlightDate: this.onUnHighlightDate,
       dateRangesForDate: this.dateRangesForDate,
       dateComponent: CalendarDate,
-      locale: this.props.locale,
     };
 
     return <CalendarMonth {...props} />;

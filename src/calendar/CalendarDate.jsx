@@ -39,6 +39,8 @@ const CalendarDate = React.createClass({
     onHighlightDate: React.PropTypes.func,
     onUnHighlightDate: React.PropTypes.func,
     onSelectDate: React.PropTypes.func,
+
+    overlayDateRange: React.PropTypes.bool,
   },
 
   getInitialState() {
@@ -159,6 +161,7 @@ const CalendarDate = React.createClass({
       isHighlightedRangeStart,
       isHighlightedRangeEnd,
       isInHighlightedRange,
+      overlayDateRange,
     } = this.props;
 
     let bemModifiers = this.getBemModifiers();
@@ -225,13 +228,24 @@ const CalendarDate = React.createClass({
         onMouseEnter={this.mouseEnter}
         onMouseLeave={this.mouseLeave}
         onMouseDown={this.mouseDown}>
-        {numStates > 1 &&
-          <div className={this.cx({element: "HalfDateStates"})}>
-            <CalendarDatePeriod period="am" color={amColor} />
-            <CalendarDatePeriod period="pm" color={pmColor} />
-          </div>}
-        {numStates === 1 &&
-          <div className={this.cx({element: "FullDateStates"})} style={style} />}
+        {
+          !overlayDateRange ?
+            numStates > 1 &&
+              <div className={this.cx({element: "HalfDateStates"})}>
+                <CalendarDatePeriod period="am" color={amColor} />
+                <CalendarDatePeriod period="pm" color={pmColor} />
+              </div>
+            :
+            numStates > 1 &&
+            <div className={this.cx({element: "CircleDateStates"})}>
+              <CalendarDatePeriod period="am" color={amColor} />
+              <CalendarDatePeriod period="pm" color={pmColor} />
+            </div>
+        }
+        {
+          numStates === 1 &&
+            <div className={this.cx({element: "FullDateStates"})} style={style} />
+        }
         <span className={this.cx({element: "DateLabel"})}>{date.format('D')}</span>
         {selectionModifier ? <CalendarSelection modifier={selectionModifier} pending={pending} /> : null}
         {highlightModifier ? <CalendarHighlight modifier={highlightModifier} /> : null}

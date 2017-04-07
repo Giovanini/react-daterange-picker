@@ -167,7 +167,7 @@ $ns: DateRangePicker !default;
     cursor: pointer;
     overflow: hidden;
     position: relative;
-
+    border-radius: 50px;
     &:first-child {
       border-left-width: 1px;
     }
