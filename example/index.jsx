@@ -66,8 +66,8 @@ const Index = React.createClass({
           </div>
           <div className="right">
             <div className="example">
-              <select className="selector">
-                <option selected value="custom">Custom</option>
+              <select className="selector" defaultValue="custom">
+                <option value="custom">Custom</option>
                 <option value="today">Today</option>
                 <option value="yesterday">Yesterday</option>
               </select>
@@ -84,8 +84,8 @@ const Index = React.createClass({
             </div>
             <p>Comparing to:</p>
             <div className="example">
-              <select className="selector">
-                <option selected value="custom">Custom</option>
+              <select className="selector" defaultValue="custom">
+                <option value="custom">Custom</option>
                 <option value="none">None</option>
                 <option value="previousDay">Previous day</option>
                 <option value="previousWeek">Previous week</option>
@@ -104,8 +104,8 @@ const Index = React.createClass({
                        placeholder="End date" />
               </div>
               <div className="example">
-                <select className="selector half">
-                  <option selected value="percent">%</option>
+                <select className="selector half" defaultValue="percent">
+                  <option value="percent">%</option>
                   <option value="abs">abs</option>
                 </select>
               </div>
@@ -113,8 +113,8 @@ const Index = React.createClass({
 
             <p>By:</p>
             <div className="example">
-              <select className="selector half">
-                <option selected value="day">Day</option>
+              <select className="selector half" defaultValue="day">
+                <option value="day">Day</option>
                 <option value="hour">Hour</option>
                 <option value="week">Week</option>
                 <option value="month">Month</option>
