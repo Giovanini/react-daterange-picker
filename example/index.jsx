@@ -22,7 +22,26 @@ const Index = React.createClass({
       locale: locale
     });
   },
-
+  handleDate(newDate) {
+    let dateState = {}
+    switch (newDate.target.value) {
+    case 'today':
+      const now = moment();
+      const range = moment.range(now, now);
+      dateState.range = range;
+      dateState.state = 'enquire';
+      break;
+    case 'yesterday':
+      dateState.range = {};
+      dateState.state = '';
+      break;
+    case 'custom':
+      dateState.range = {};
+      dateState.state = '';
+      break;
+    }
+    this.setState([{dateState}]);
+  },
   handleSelect(dateStates) {
     this.setState({dateStates});
   },
@@ -66,7 +85,7 @@ const Index = React.createClass({
           </div>
           <div className="right">
             <div className="example">
-              <select className="selector" defaultValue="custom">
+              <select className="selector" defaultValue="custom" onChange={this.handleDate}>
                 <option value="custom">Custom</option>
                 <option value="today">Today</option>
                 <option value="yesterday">Yesterday</option>
